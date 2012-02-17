@@ -182,7 +182,7 @@ class SearcherComponent extends Object {
 
 		$Model = $Controller->$modelName;
 
-		return ($Model->Behaviors->attached('Searchable') && $Model->elastic_enabled());
+		return ($Model->Behaviors->attached('Searchable') && $Model->elastic_enabled()) ? $Model : false;
 	}
 
 	public function mOpt ($Model, $key) {

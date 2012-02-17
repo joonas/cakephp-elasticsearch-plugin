@@ -220,6 +220,7 @@ class SearchableBehavior extends ModelBehavior {
 		}
 
 		$isQuery = is_string($params);
+
 		if ($isQuery) {
 			$sqlLimit = '';
 
