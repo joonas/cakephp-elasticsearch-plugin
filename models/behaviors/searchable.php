@@ -266,7 +266,16 @@ class SearchableBehavior extends ModelBehavior {
 			}
 		} else {
 			if ($id) {
-				$params['conditions'][$Model->primaryKey] = $id;
+				// Only override conditions if they aren't already set
+				if (!array_key_exists('conditions', $params)) {
+					// If we have a contain, we need to namespace the condition
+					if (array_key_exists('contain', $params)) {
+						$params['conditions'] = array("{$Model->alias}.{$Model->primaryKey}" => $id);
+					} 
+					else {
+						$params['conditions'][$Model->primaryKey] = $id;					
+					}					
+				}
 			} else {
 				$params['offset'] = $offset;
 				if (empty($params['limit'])) {
