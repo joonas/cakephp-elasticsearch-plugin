@@ -140,6 +140,17 @@ class SearchableBehavior extends ModelBehavior {
 		return !!$res;
 	}
 
+	public function afterDelete($Model) {
+		if (!$this->opt($Model, 'realtime_update')) {
+			return true;
+		}
+		if (!($data = @$Model->data[$Model->alias])) {
+			return true;
+		}
+
+		$this->execute($Model, 'DELETE', $Model->id);
+	}
+
 	public function fill () {
 		$args = func_get_args();
 
