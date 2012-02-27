@@ -102,7 +102,8 @@ class SearchableBehavior extends ModelBehavior {
 			$buf = file_get_contents($filePath);
 			if (false !== stripos($buf, 'Elasticsearch.Searchable')) {
 				$Model = ClassRegistry::init($modelName);
-				if (!$Model->Behaviors->attached('Searchable') || !$Model->elastic_enabled()) {
+				// if (!$Model->Behaviors->attached('Searchable') || !$Model->elastic_enabled()) {
+				if (!$Model->Behaviors->attached('Searchable')) {
 					continue;
 				}
 
