@@ -133,7 +133,9 @@ class SearchableBehavior extends ModelBehavior {
 		$res = $this->_fillChunk($Model, null, null, $id);
 
 		// Index needs a moment to be updated
-		$this->execute($Model, 'POST', '_refresh');
+		if ($Model->fullIndex) {
+			$this->execute($Model, 'POST', '_refresh', array('fullIndex' => true));
+		}
 
 		return !!$res;
 	}
@@ -398,7 +400,11 @@ class SearchableBehavior extends ModelBehavior {
 		$this->progress($Model, '(store)' . "\n");
 
 		if ($docCount == 1) {
-			$res = $this->execute($Model, 'PUT', '_bulk', $doc);
+			if ($Model->fullIndex) {
+				$res = $this->execute($Model, 'PUT', '_bulk', $doc);
+			} else {
+				$res = $this->execute($Model, 'PUT', $doc[$primKeyPath], $doc);
+			}
 		} else {
 			$res = $this->execute($Model, 'PUT', '_bulk', $commands, array('prefix' => '', ));
 		}
